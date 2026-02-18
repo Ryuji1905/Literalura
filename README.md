@@ -43,7 +43,7 @@ CREATE DATABASE literalura;
 
 Configurar en application.properties:
 
-spring.datasource.url=jdbc:postgresql://localhost:5432/literalura
+spring.datasource.url=jdbc:postgresql://tu_host/literalura
 spring.datasource.username=tu_usuario
 spring.datasource.password=tu_password
 spring.jpa.hibernate.ddl-auto=update
@@ -69,3 +69,5 @@ Persistencia con JPA
 Relaciones entre entidades
 
 Arquitectura en capas
+
+Autor: Justin Aguirre Navarro
