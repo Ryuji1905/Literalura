@@ -6,21 +6,28 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "libros")
 
+
 public class Libro {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(unique = true)
+    private Long gutendexId;  // ID que viene del API
+
+    @Column(unique = true, length = 1000)
     private String titulo;
 
     @ManyToOne
     private Autor autor;
 
+    @Column(columnDefinition = "TEXT")
     private String resumen;
+
     private String lenguajes;
 
     public Libro(DatosLibro datosLibro){
-        this.id = datosLibro.id();
+        this.gutendexId = datosLibro.id();
         this.titulo = datosLibro.titulo();
 
         if (!datosLibro.autores().isEmpty()) {
@@ -34,6 +41,16 @@ public class Libro {
         this.lenguajes = String.join(",", datosLibro.lenguajes());
     }
 
+    public Libro() {
+    }
+
+    public Autor getAutor() {
+        return autor;
+    }
+
+    public void setAutor(Autor autor) {
+        this.autor = autor;
+    }
 
     public Long getId() {
         return id;
@@ -49,14 +66,6 @@ public class Libro {
 
     public void setTitulo(String titulo) {
         this.titulo = titulo;
-    }
-
-    public Autor getAutores() {
-        return autor;
-    }
-
-    public void setAutores(Autor autor) {
-        this.autor = autor;
     }
 
     public String getResumen() {

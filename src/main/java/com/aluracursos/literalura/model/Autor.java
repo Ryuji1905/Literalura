@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "autor")
@@ -17,7 +18,7 @@ public class Autor {
     private Integer nacimiento;
     private Integer fallece;
 
-    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "autor", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Libro> libros = new ArrayList<>();
 
     public Autor(){}
@@ -62,10 +63,24 @@ public class Autor {
 
     @Override
     public String toString() {
-        return "Autor{" +
-                "nombre='" + nombre + '\'' +
-                ", nacimiento=" + nacimiento +
-                ", fallece=" + fallece +
-                '}';
+        String salto = System.lineSeparator();
+
+        return "********* AUTOR *********" + salto +
+                "Nombre: " + nombre + salto +
+                "Nacimiento: " + nacimiento + salto +
+                "Fallecimiento: " + (fallece != null ? fallece : "Aún vivo") + salto +
+                "Libros: " + listarTitulos() + salto +
+                "*************************";
     }
+
+    private String listarTitulos() {
+        if (libros == null || libros.isEmpty()) {
+            return "No tiene libros registrados.";
+        }
+
+        return libros.stream()
+                .map(Libro::getTitulo)
+                .collect(Collectors.joining(", "));
+    }
+
 }
